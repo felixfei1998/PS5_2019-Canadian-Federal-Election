@@ -1,0 +1,46 @@
+---
+title: Will Liberal Party their major seats of 2019 Canadian Federal Election if everyone
+  votes? Predict the chance of 2019 Canadian Federal Election results change using
+  a Poststratification Prediction Model.
+author: "Yuyu Fei"
+date: "12/10/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse); library(knitr)
+```
+
+# Abstarct
+
+I used a logistic regression model with poststratification to predict weather the outcome of 2019 Canadian Federal Election would change if everyone votes. Specifically, the probability of Liberal Party maintains their majority government. I analyze survey data from Canadian Data Survey. j
+
+
+Keywords: Canada, 2019 Canadian Federal Election, Liberal Party
+
+\newpage
+
+
+# Introduction
+
+The 2019 Canadian Federal Election formally 43rd Canadian general election was held on October 21, 2019. The aim of the election is to elect the members of the House of Commons to the 43rd Canadian Parliament. In the 2015 federal election, the Liberal party, led by prime minster Justin Trudeau, won the majority government, and turns into 2019 federal election, Liberal party tend to keep the trend. In 2019 federal election, the Liberal party won 157 seats to form a minority government, however, they lost their majority government that they had in 2015 federal election. (Wikipedia, 2019) Their national popular vote was less than 35 per cent which marked a history that the lowest percentage of national popular vote of governing party. The conservative party, led by Andrew Scheer, won 121 seats, and remained their official opposition. The Bloc Québécois, led by Yves-François Blanchet, won 32 seats, and became the third party for first time since 2008. (Wikipedia, 2019). Following by the election, the new cabinet of Prime minster Justin Trudeau was sworn in on November 20, 2019.
+
+The aim of this analysis is to estimate the probability of liberal party maintaining their majority government using statistical technique: multivariable regression with poststratification. The outcome variable I am particularly interested in was whether a vote would vote for Liberal Party candidate, which was a binary outcome. First, we fit a multivariable logistic regression model to fit ouroutcome variable using a few demographic demographic characteristics. Next, we poststratified the selected sample with the variables in the logistic regression model. We then assigned sampled units into different cells based on combinations of the variables. We used the logistic regression model to predict the probability of giving the vote to Donald Trump for each cell. Ultimately, we combined the estimated probabilities of all cells to compute the probability of Liberal party winning the majority government. 
+
+\newpage
+
+# Data
+
+
+# Model
+
+
+# Results
+
+
+# Discussion
+
+
+# Reference
+
