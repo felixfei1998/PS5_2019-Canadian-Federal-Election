@@ -1,9 +1,8 @@
 ---
-title: Will Liberal Party their major seats of 2019 Canadian Federal Election if everyone
-  votes? Predict the chance of 2019 Canadian Federal Election results change using
-  a Poststratification Prediction Model.
+title: Prediction and analyzation of 2019 Canadian Federal Election if everyone votes
 author: "Yuyu Fei"
-date: "12/10/2020"
+date: "December 22/2020"
+bibliography: references.bib
 output: pdf_document
 ---
 
@@ -14,7 +13,7 @@ library(tidyverse); library(knitr)
 
 # Abstarct
 
-I used a logistic regression model with poststratification to predict weather the outcome of 2019 Canadian Federal Election would change if everyone votes. Specifically, the probability of Liberal Party maintains their majority government. I analyze survey data from Canadian Data Survey. j
+I used a logistic regression model with poststratification to predict weather the outcome of 2019 Canadian Federal Election would change if everyone votes. Specifically, the probability of Liberal Party maintains their majority government. I analyze survey data from Canadian Data Survey.
 
 
 Keywords: Canada, 2019 Canadian Federal Election, Liberal Party
@@ -24,23 +23,101 @@ Keywords: Canada, 2019 Canadian Federal Election, Liberal Party
 
 # Introduction
 
-The 2019 Canadian Federal Election formally 43rd Canadian general election was held on October 21, 2019. The aim of the election is to elect the members of the House of Commons to the 43rd Canadian Parliament. In the 2015 federal election, the Liberal party, led by prime minster Justin Trudeau, won the majority government, and turns into 2019 federal election, Liberal party tend to keep the trend. In 2019 federal election, the Liberal party won 157 seats to form a minority government, however, they lost their majority government that they had in 2015 federal election. (Wikipedia, 2019) Their national popular vote was less than 35 per cent which marked a history that the lowest percentage of national popular vote of governing party. The conservative party, led by Andrew Scheer, won 121 seats, and remained their official opposition. The Bloc Québécois, led by Yves-François Blanchet, won 32 seats, and became the third party for first time since 2008. (Wikipedia, 2019). Following by the election, the new cabinet of Prime minster Justin Trudeau was sworn in on November 20, 2019.
+The 2019 Canadian Federal Election formally 43rd Canadian general election was held on October 21, 2019. The aim of the election is to elect the members of the House of Commons to the 43rd Canadian Parliament. In the 2015 federal election, the Liberal party, led by prime minster Justin Trudeau, won the majority government, and turns into 2019 federal election, Liberal party tend to keep the trend. In 2019 federal election, the Liberal party won 157 seats to form a minority government, however, they lost their majority government that they had in 2015 federal election. Their national popular vote was less than 35 per cent which marked a history that the lowest percentage of national popular vote of governing party. The conservative party, led by Andrew Scheer, won 121 seats, and remained their official opposition. The Bloc Québécois, led by Yves-François Blanchet, won 32 seats, and became the third party for first time since 2008. Following by the election, the new cabinet of Prime minster Justin Trudeau was sworn in on November 20, 2019.
 
-The aim of this analysis is to estimate the probability of liberal party maintaining their majority government using statistical technique: multivariable regression with poststratification. The outcome variable I am particularly interested in was whether a vote would vote for Liberal Party candidate, which was a binary outcome. First, we fit a multivariable logistic regression model to fit ouroutcome variable using a few demographic demographic characteristics. Next, we poststratified the selected sample with the variables in the logistic regression model. We then assigned sampled units into different cells based on combinations of the variables. We used the logistic regression model to predict the probability of giving the vote to Donald Trump for each cell. Ultimately, we combined the estimated probabilities of all cells to compute the probability of Liberal party winning the majority government. 
+The aim of this analysis is to estimate the probability of liberal party maintaining their majority government using statistical technique: multivariable regression with poststratification. The outcome variable I am particularly interested in was whether a vote would vote for Liberal Party candidate, which was a binary outcome. First, we fit a multivariable logistic regression model to fit ouroutcome variable using a few demographic demographic characteristics. Next, we poststratified the selected sample with the variables in the logistic regression model. We then assigned sampled units into different cells based on combinations of the variables. Ultimately, we combined the estimated probabilities of all cells to compute the probability of Liberal party winning the majority government. 
 
 \newpage
 
 # Data
 
+The survey dataset was retrived from the 2019 Canadian Election Study, the dataset contains voters from all cross Canada including their gender, age, location, education. The dataset targeted the voters in 2019 Canadian Election Study, as a result, the dateset is complex and contains large numbers of variables. This consider as the advantages of the dataset. However, the dataset contains some non-response bias as its disadvantage. In the following section, I will relate voter's choice with their gender, age, location, and education. 
 
-# Model
+```{r}
+library(devtools)
+#devtools::install_github("hodgettsp/cesR")
+
+library(cesR)
+library(labelled)
+
+# call 2019 CES online survey
+get_ces("ces2019_web")
+
+# convert values to factor type
+df<-to_factor(ces2019_web)
+
+head(df)
+
+dim(df)
+
+summary(df)
+
+str(df)
+
+dev.new()
+
+```
 
 
-# Results
+
+
+
+```{r}
+dev.new()
+plot(df$cps19_gender,xlab='gender',ylab='numbers',main='Figure-1 Voter by gender')
+```
+# From Figure-1, the number of women voters is higher than other votes
+
+```{r}
+dev.new()
+boxplot(df$pes19_age,xlab='age',ylab='numbers',main='Figure-2 Voter by age')
+```
+
+# From Figure-2, the majority of voters is between age 40 to 70. 
+
+```{r}
+dev.new()
+plot(df$cps19_province,xlab='province',ylab='numbers',main='Figure-3 Voter by location')
+```
+
+# From Figure-3, voters live in Ontario province have the largest number. 
+
+```{r}
+dev.new()
+barplot(table(df$cps19_education),xlab='education',ylab='numbers',main='Figures-4 Voters by education')
+```
+# From Figure-4, voters eduaction level appears as normal distribution. 
+
+```{r}
+dev.new()
+barplot(table(df$pes19_votechoice2019),xlab='Party',ylab='numbers',main='Figure-5 Party votes')
+```
+
+# From Figure-5, the top three parties are Liberal Party, Conservative Party, and NPD Party. 
+
+```{r}
+library(nnet)
+
+mult.model<-multinom(pes19_votechoice2019~cps19_gender + pes19_age + cps19_province + cps19_education,
+                
+                data = df)
+
+
+pre_logistic<-predict(mult.model,newdata = df)
+
+table(df$pes19_votechoice2019,pre_logistic)
+```
+
+# From the table above, majority people vote for liberal party, the results remain unchange as everyone votes. Liberal Party had the most voters amoung all parties. 
+
+\newpage
 
 
 # Discussion
 
+The results showing that if everyone votes, the results will remain the same, as Liberal Party will remain their majority seats in the house Commons. Amoung those votes, women votes the most for Liberal Party and men are willing to vote for NDP and Green Parties. Conservative Party will remain as their opposite party. The higher education group will vote mostly for Conservative Party. The top three parties are Liberal, Conservative, and NDP Parties. There also exists some weakness for the dataset as we have limited technique for the estimation, we need higher skills to better predict the dataset. Our prediction ability of the dataset is limited. There are also many variables in the dataset, we cannot use them all in the prediction which cause some turnovers. 
+
+\newpage
 
 # Reference
-“2019 Canadian Federal Election,” December 8, https://en.wikipedia.org/wiki/2019_Canadian_federal_election.
+
