@@ -43,4 +43,4 @@ The aim of this analysis is to estimate the probability of liberal party maintai
 
 
 # Reference
-
+“2019 Canadian Federal Election,” December 8, https://en.wikipedia.org/wiki/2019_Canadian_federal_election.
